@@ -29,7 +29,7 @@ public class BankService {
             }
         }
 
-        System.out.println(result.toString());
+        System.out.println(result);
     }
 	
 }

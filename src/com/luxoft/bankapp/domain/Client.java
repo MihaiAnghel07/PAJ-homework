@@ -1,18 +1,18 @@
 package com.luxoft.bankapp.domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class Client {
+public class Client implements Comparable<Client>{
 	
 	private String name;
 	private Gender gender;
-	private List<Account> accounts = new ArrayList<Account>();
+	private String city;
+	private Set<Account> accounts = new HashSet<>();
 
-	public Client(String name, Gender gender) {
+	public Client(String name, Gender gender, String city) {
 		this.name = name;
 		this.gender = gender;
+		this.city = city;
 	}
 	
 	public void addAccount(final Account account) {
@@ -26,9 +26,13 @@ public class Client {
 	public Gender getGender() {
 		return gender;
 	}
-	
-	public List<Account> getAccounts() {
-		return Collections.unmodifiableList(accounts);
+
+	public String getCity() {
+		return city;
+	}
+
+	public Set<Account> getAccounts() {
+		return Collections.unmodifiableSet(accounts);
 	}
 	
 	public String getClientGreeting() {
@@ -44,4 +48,27 @@ public class Client {
 		return getClientGreeting();
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Client client = (Client) o;
+		return Objects.equals(name, client.name) &&
+				gender == client.gender &&
+				Objects.equals(city,client.city);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, gender, city);
+	}
+
+	@Override
+	public int compareTo(Client c) {
+		return this.name.compareTo(c.name);
+	}
 }

@@ -9,5 +9,12 @@ public class SavingAccount extends AbstractAccount {
 	public double maximumAmountToWithdraw(){
         return getBalance();
     }
-	
+
+	@Override
+	public String toString() {
+		return "SavingAccount{" +
+				"id = " + getId() +
+				"; balance = " + balance +
+				'}';
+	}
 }

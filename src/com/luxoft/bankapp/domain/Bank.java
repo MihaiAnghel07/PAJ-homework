@@ -4,15 +4,12 @@ import com.luxoft.bankapp.exceptions.ClientExistsException;
 import com.luxoft.bankapp.utils.ClientRegistrationListener;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Bank {
 
-    private final List<Client> clients = new ArrayList<Client>();
-    private final List<ClientRegistrationListener> listeners = new ArrayList<ClientRegistrationListener>();
+    private final Set<Client> clients = new HashSet<>();
+    private final List<ClientRegistrationListener> listeners = new ArrayList<>();
 
     private int printedClients = 0;
     private int emailedClients = 0;
@@ -51,8 +48,8 @@ public class Bank {
         }
     }
 
-    public List<Client> getClients() {
-        return Collections.unmodifiableList(clients);
+    public Set<Client> getClients() {
+        return Collections.unmodifiableSet(clients);
     }
 
     class PrintClientListener implements ClientRegistrationListener {
@@ -61,7 +58,6 @@ public class Bank {
             System.out.println("Client added: " + client.getName());
             printedClients++;
         }
-
     }
 
     class EmailNotificationListener implements ClientRegistrationListener {

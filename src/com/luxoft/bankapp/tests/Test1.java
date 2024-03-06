@@ -14,6 +14,9 @@ import com.luxoft.bankapp.exceptions.NotEnoughFundsException;
 import com.luxoft.bankapp.exceptions.OverdraftLimitExceededException;
 import com.luxoft.bankapp.service.BankService;
 
+import java.lang.ref.Cleaner;
+import java.util.Set;
+
 public class Test1 {
 	
 	@Test
@@ -39,7 +42,7 @@ public class Test1 {
 	
 	@Test
 	public void testClient() {
-		Client client = new Client("Smith John", Gender.MALE); 
+		Client client = new Client("Smith John", Gender.MALE, "New York");
 		client.addAccount(new SavingAccount(1, 1000.0));
 		client.addAccount(new CheckingAccount(2, 1000.0, 100.0));
 		assertEquals(2, client.getAccounts().size());
@@ -50,22 +53,29 @@ public class Test1 {
 	@Test
 	public void testBank() throws ClientExistsException {
 		Bank bank = new Bank();
-		Client client1 = new Client("Smith John", Gender.MALE); 
+		Client client1 = new Client("Smith John", Gender.MALE, "Bucharest");
 		client1.addAccount(new SavingAccount(1, 1000.0));
 		client1.addAccount(new CheckingAccount(2, 1000.0, 100.0));
 		
-		Client client2 = new Client("Smith Michelle", Gender.FEMALE); 
+		Client client2 = new Client("Smith Michelle", Gender.FEMALE, "Berlin");
 		client2.addAccount(new SavingAccount(3, 2000.0));
 		client2.addAccount(new CheckingAccount(4, 1500.0, 200.0));
 		
 		BankService.addClient(bank, client1);
 		BankService.addClient(bank, client2);
-		
-		assertEquals(2, bank.getClients().size());
-		assertEquals("Mr. Smith John", bank.getClients().get(0).getClientGreeting());
-		assertEquals("Mr. Smith John", bank.getClients().get(0).toString());
-		assertEquals("Ms. Smith Michelle", bank.getClients().get(1).getClientGreeting());
-		assertEquals("Ms. Smith Michelle", bank.getClients().get(1).toString());
+
+		Set<Client> clientSet = bank.getClients();
+
+		assertEquals(2, clientSet.size());
+		clientSet.forEach(client -> {
+			if (client.getGender() == Gender.MALE) {
+				assertEquals("Mr. Smith John", client.getClientGreeting());
+				assertEquals("Mr. Smith John", client.toString());
+			} else {
+				assertEquals("Ms. Smith Michelle", client.getClientGreeting());
+				assertEquals("Ms. Smith Michelle", client.toString());
+			}
+		});
 	}
 
 }
