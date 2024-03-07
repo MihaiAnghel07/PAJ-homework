@@ -1,6 +1,7 @@
 package com.luxoft.bankapp.domain;
 
 import com.luxoft.bankapp.exceptions.ClientExistsException;
+import com.luxoft.bankapp.service.EmailService;
 import com.luxoft.bankapp.utils.ClientRegistrationListener;
 
 import java.text.DateFormat;
@@ -64,6 +65,7 @@ public class Bank {
         @Override
         public void onClientAdded(Client client) {
             System.out.println("Notification email for client " + client.getName() + " to be sent");
+            EmailService.sendNotificationEmail(new Email(client, "bank@notification.ro", client.getName() + "@gmail.com"));
             emailedClients++;
         }
     }
